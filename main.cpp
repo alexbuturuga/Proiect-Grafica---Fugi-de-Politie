@@ -5,8 +5,8 @@
 #include <filesystem>
 #include "georg.cpp"
 #include <string>
-#include <maur.cpp>
-#include <darius.cpp>
+#include "maur.cpp"
+#include "darius.cpp"
 
 using namespace std;
 
@@ -22,6 +22,8 @@ double j = 0.0;
 double i = 0.0;
 double z = 0.0;
 
+bool isYellow1 = false;
+bool isYellow2 = false;
 double contor = 0;
 double loc_vert = 800;
 int vector[3] = { 0, 160, 320 };
@@ -126,7 +128,7 @@ void drawScene(void)
 	glVertex2i(-100, 460);// Stanga sus
 	glEnd();
 
-	drawTree(100,100);
+	
 
 	RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
 
@@ -201,6 +203,21 @@ void drawScene(void)
 	glColor3f(1, 0, 0);
 	glRecti(-55, 10, -45, 25);
 
+	if (isYellow1) {
+		glColor3f(1.0, 1.0, 0.0); // yellow color
+	}
+	else {
+		glColor3f(0.8, 0.5, 0.0); // original color
+	}
+	glRecti(70, -25, 80, -10);
+	if (isYellow2) {
+		glColor3f(1.0, 1.0, 0.0); // yellow color
+	}
+	else {
+		glColor3f(0.8, 0.5, 0.0); // original color
+	}
+	glRecti(70, 10, 80, 25);
+
 	if (ok == 0)
 	{
 		rsj = 8;
@@ -231,6 +248,7 @@ void drawScene(void)
 
 	}
 	
+
 	//MASINA DE POLITIE
 	//desenam a doua masina (adversara)
 	glPushMatrix();
@@ -356,14 +374,26 @@ void keyboard(int key, int x, int y)
 
 	switch (key) {
 	case GLUT_KEY_UP:
+		isYellow2 = true;
+		glutPostRedisplay();
 		miscasus();
 		break;
 	case GLUT_KEY_DOWN:
+		isYellow1 = true;
+		glutPostRedisplay();
 		miscajos();
 		break;
-
+		// other cases
 	}
 
+}
+
+void timer(int value) {
+	isYellow1 = false;
+	isYellow2 = false;
+
+	glutPostRedisplay();
+	glutTimerFunc(1000, timer, 0); // call this function again after 1000 milliseconds
 }
 
 
@@ -386,6 +416,6 @@ int main(int argc, char** argv)
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(reshape);
 	glutSpecialFunc(keyboard);
-
+	glutTimerFunc(1000, timer, 0);
 	glutMainLoop();
 }
