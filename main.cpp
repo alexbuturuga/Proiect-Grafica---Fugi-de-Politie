@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include "georg.cpp"
+#include <string>
 
 using namespace std;
 
@@ -38,12 +39,11 @@ void init(void)
 
 void RenderString(float x, float y, void* font, const unsigned char* string)
 {
-
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glRasterPos2f(x, y);
-
 	glutBitmapString(font, string);
 }
+
 void miscareGirofar(void) {
 	// pentru girofar
 	z += 0.05;
@@ -125,6 +125,8 @@ void drawScene(void)
 	glEnd();
 	RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
 
+
+
 	// Delimitare sosea
 	glLineWidth(3);
 	glColor3f(1, 1, 1);
@@ -166,13 +168,15 @@ void drawScene(void)
 	glDisable(GL_LINE_STIPPLE);
 	glPopMatrix();
 
+	//Afosare scor
+	string scoreText = "Score: " + to_string(score); // convert the score to a string
+	const unsigned char* scoreStr = reinterpret_cast<const unsigned char*>(scoreText.c_str()); // convert the string to a char array
+	RenderString(580.0f, 425.0f, GLUT_BITMAP_HELVETICA_18, scoreStr); // display the score
 
 
 	//desenam masina
 	glPushMatrix();
 	glTranslated(0.0, j, 0.0);
-
-
 
 	//masina lu' Hotzu
 	glColor3f(0.996, 0.365, 0.149);
