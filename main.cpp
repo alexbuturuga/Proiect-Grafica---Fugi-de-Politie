@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include <filesystem>
 
-
+//Maru ii beleste coaiele lui Biciclentiu
 using namespace std;
 
 double xFinal = 20;
