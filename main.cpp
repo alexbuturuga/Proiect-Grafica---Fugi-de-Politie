@@ -21,7 +21,10 @@ double ok = 1;
 double j = 0.0;
 double i = 0.0;
 double z = 0.0;
-
+double PozitieCopac = 175;
+double PozitieRock = 400;
+double PozitieCasa = 660;
+double PozitieBoschet = 900;
 bool isYellow1 = false;
 bool isYellow2 = false;
 double contor = 0;
@@ -69,26 +72,59 @@ void miscareGirofar(void) {
 
 	glutPostRedisplay();
 }
+
 void startgame(void)
 {
-
+	
 	if (height != j || (loc_vert > 90 || loc_vert < -90))
 	{
+		if (PozitieCopac > -200)
+		{
+			PozitieCopac--;
+		}
+		else
+		{
+			PozitieCopac = 800;
+		}
+		if (PozitieCasa > -200)
+		{
+			PozitieCasa--;
+		}
+		else
+		{
+			PozitieCasa = 800;
+		}
+		if (PozitieBoschet > -200)
+		{
+			PozitieBoschet--;
+		}
+		else
+		{
+			PozitieBoschet = 800;
+		}
+		if (PozitieRock > -200)
+		{
+			PozitieRock--;
+		}
+		else
+		{
+			PozitieRock = 800;
+		}
 
 		if (i < -380)
 		{
 			i = 0;
 		}
-		i = i - 2 * timp;
+		i = i - 12 * timp;
 
-		loc_vert -= timp;
+		loc_vert -= 6*timp;
 
-		if (loc_vert < -150)
+		if (loc_vert < -350)
 		{
 			score += 100;
 			height = vector[rand() % 3];
 			cout << "Score:  " << score << endl;
-			loc_vert = 800;
+			loc_vert = 700;
 		}
 
 		if (score >= pct && pct <= 15000)
@@ -150,13 +186,18 @@ void drawScene(void)
 	glVertex2i(1500, 400);
 	glEnd();
 
-	// Liniile intrerupte
 	glPushMatrix();
+
+	// Liniile intrerupte
+
+	//Dresenam Obiecte
+	drawTree(PozitieCopac, -130);
+	drawBush(PozitieBoschet, -120);
+	drawHouse(PozitieCasa, -130);
+	drawRock(PozitieRock, -130);
+
 	glTranslated(i, 0.0, 0.0);
-
-	
-
-
+	glColor3f(1, 1, 1);
 	glEnable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0x00FF);
 	glBegin(GL_LINES);
@@ -165,17 +206,18 @@ void drawScene(void)
 	glEnd();
 	glDisable(GL_LINE_STIPPLE);
 
-	
+	glColor3f(1, 1, 1);
 	glEnable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0x00FF);
 	glBegin(GL_LINES);
+	glTranslated(i, 0.0, 0.0);
 	glVertex2i(-100, 240);
 	glVertex2i(1500, 240);
 	glEnd();
 	glDisable(GL_LINE_STIPPLE);
 	glPopMatrix();
-
-	//Afosare scor
+	glPushMatrix();
+	//Afisare scor
 	string scoreText = "Score: " + to_string(score); // convert the score to a string
 	const unsigned char* scoreStr = reinterpret_cast<const unsigned char*>(scoreText.c_str()); // convert the string to a char array
 	RenderString(580.0f, 425.0f, GLUT_BITMAP_HELVETICA_18, scoreStr); // display the score
