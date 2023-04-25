@@ -5,7 +5,6 @@
 #include <filesystem>
 #include "georg.cpp"
 
-//Maru ii beleste coaiele lui biciclentiu
 using namespace std;
 
 double xFinal = 20;
