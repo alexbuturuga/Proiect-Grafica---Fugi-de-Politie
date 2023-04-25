@@ -3,8 +3,9 @@
 #include <GL/freeglut.h>
 #include <Windows.h>
 #include <filesystem>
+#include "georg.cpp"
 
-//Maru ii beleste coaiele lui Biciclentiu
+//Maru ii beleste coaiele lui biciclentiu
 using namespace std;
 
 double xFinal = 20;
