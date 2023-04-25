@@ -1,0 +1,25 @@
+﻿  C:freeglut.dll
+  C:glew32.dll
+  C:glew32s.dll
+  3 File(s) copied
+  C:glfw3.dll
+  C:glfw3dll.dll
+  C:glfw3_mt.dll
+  3 File(s) copied
+  C:SOIL.dll
+  1 File(s) copied
+  main.cpp
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(75,40): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(86,39): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(86,19): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(89,42): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(89,21): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(70,11): warning C4101: 'theta': unreferenced local variable
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(69,8): warning C4101: 'cerc': unreferenced local variable
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(126,25): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(153,23): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(155,23): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\Administrator\source\repos\Proiect Grafica\Proiect Grafica\main.cpp(222,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Proiect Grafica.vcxproj -> C:\Users\Administrator\source\repos\Proiect Grafica\x64\Debug\Proiect Grafica.exe
+  0 File(s) copied
+  0 File(s) copied
