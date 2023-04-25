@@ -5,6 +5,8 @@
 #include <filesystem>
 #include "georg.cpp"
 #include <string>
+#include <maur.cpp>
+#include <darius.cpp>
 
 using namespace std;
 
@@ -123,6 +125,9 @@ void drawScene(void)
 	glVertex2i(700, 460); // Dreapta sus
 	glVertex2i(-100, 460);// Stanga sus
 	glEnd();
+
+	drawTree(100,100);
+
 	RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
 
 
