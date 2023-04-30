@@ -7,6 +7,7 @@
 #include <string>
 #include "maur.cpp"
 #include "darius.cpp"
+#include "start.cpp"
 
 using namespace std;
 
@@ -441,23 +442,25 @@ void timer(int value) {
 
 int main(int argc, char** argv)
 {
-	wchar_t path[MAX_PATH];
-	GetModuleFileNameW(NULL, path, MAX_PATH);
-	directory = std::wstring(path);
-	directory = directory.substr(0, directory.find_last_of(L"\\/"));
-	std::wstring soundPath = directory + L"\\muzica.wav";
-	std::wcout << L"Project directory: " << soundPath << std::endl;
-	if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
-		cout << "Muzica fundal";
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(800, 600);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow("Depaseste masinile - mini game");
-	init();
-	glutDisplayFunc(drawScene);
-	glutReshapeFunc(reshape);
-	glutSpecialFunc(keyboard);
-	glutTimerFunc(1000, timer, 0);
-	glutMainLoop();
+	
+		wchar_t path[MAX_PATH];
+		GetModuleFileNameW(NULL, path, MAX_PATH);
+		directory = std::wstring(path);
+		directory = directory.substr(0, directory.find_last_of(L"\\/"));
+		std::wstring soundPath = directory + L"\\muzica.wav";
+		std::wcout << L"Project directory: " << soundPath << std::endl;
+		if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
+			cout << "Muzica fundal";
+		glutInit(&argc, argv);
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+		glutInitWindowSize(800, 600);
+		glutInitWindowPosition(100, 100);
+		glutCreateWindow("Depaseste masinile - mini game");
+		init();
+		glutDisplayFunc(drawScene);
+		glutReshapeFunc(reshape);
+		glutSpecialFunc(keyboard);
+		glutTimerFunc(1000, timer, 0);
+		glutMainLoop();
+	
 }
