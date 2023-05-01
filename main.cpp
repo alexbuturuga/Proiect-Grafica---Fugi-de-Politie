@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include <GL/glut.h>
 #include <GL/freeglut.h>
 #include <Windows.h>
 #include <filesystem>
@@ -12,6 +13,7 @@
 using namespace std;
 
 double xFinal = 20;
+
 std::wstring directory;
 GLdouble left_m = -100.0;
 GLdouble right_m = 700.0;
@@ -29,20 +31,20 @@ bool isYellow1 = false;
 bool isYellow2 = false;
 double contor = 0;
 double loc_vert = 800;
-int vector[3] = {0, 160, 320};
+int vector[3] = { 0, 160, 320 };
 double height = vector[rand() % 3];
 int score = 0;
 double timp = 0.15;
 int pct = 1000;
 int ok2 = 0;
 double rsj, rdj, rss, rds = 0;
+double paused = 0;
+bool gameStarted = false;
+int pauza = 1;
 
-void init(void)
-{
-	glClearColor(0.5, 0.5, 0.5, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(left_m, right_m, bottom_m, top_m, -1.0, 1.0);
-}
+
+
+
 
 void RenderString(float x, float y, void* font, const unsigned char* string)
 {
@@ -51,9 +53,20 @@ void RenderString(float x, float y, void* font, const unsigned char* string)
 	glutBitmapString(font, string);
 }
 
+void init(void)
+{
+
+	glClearColor(0.5, 0.5, 0.5, 0.0);
+	glMatrixMode(GL_PROJECTION);
+	glOrtho(left_m, right_m, bottom_m, top_m, -1.0, 1.0);
+
+}
+
+
+
 void miscareGirofar(void) {
 	// pentru girofar
-	z += 0.05;
+	z += pauza*0.05;
 	if (z > 360) {
 		z = 0;
 	}
@@ -63,10 +76,10 @@ void miscareGirofar(void) {
 
 	// pentru schimbarea benzii
 	if (i > xFinal && i > -120) {
-		i -= 0.15;
+		i -= pauza*0.15;
 	}
 	if (i < xFinal && i < 20) {
-		i += 0.15;
+		i += pauza*0.15;
 	}
 
 
@@ -75,74 +88,96 @@ void miscareGirofar(void) {
 
 void startgame(void)
 {
-	
+
 	if (height != j || (loc_vert > 90 || loc_vert < -90))
 	{
-		if (PozitieCopac > -200)
+		if (pauza == 1)
 		{
-			PozitieCopac--;
-		}
-		else
-		{
-			PozitieCopac = 800;
-		}
-		if (PozitieCasa > -200)
-		{
-			PozitieCasa--;
-		}
-		else
-		{
-			PozitieCasa = 800;
-		}
-		if (PozitieBoschet > -200)
-		{
-			PozitieBoschet--;
-		}
-		else
-		{
-			PozitieBoschet = 800;
-		}
-		if (PozitieRock > -200)
-		{
-			PozitieRock--;
-		}
-		else
-		{
-			PozitieRock = 800;
-		}
+			if (PozitieCopac > -200)
+			{
+				PozitieCopac--;
+			}
+			else
+			{
+				PozitieCopac = 800;
+			}
+			if (PozitieCasa > -200)
+			{
+				PozitieCasa--;
+			}
+			else
+			{
+				PozitieCasa = 800;
+			}
+			if (PozitieBoschet > -200)
+			{
+				PozitieBoschet--;
+			}
+			else
+			{
+				PozitieBoschet = 800;
+			}
+			if (PozitieRock > -200)
+			{
+				PozitieRock--;
+			}
+			else
+			{
+				PozitieRock = 800;
+			}
 
-		if (i < -380)
-		{
-			i = 0;
+			if (i < -380)
+			{
+				i = 0;
+			}
+			i = i - 12 * timp;
+
+			loc_vert -= 6 * timp;
+
+			if (loc_vert < -350)
+			{
+				score += 100;
+				height = vector[rand() % 3];
+				cout << "Score:  " << score << endl;
+				loc_vert = 700;
+			}
+
+			if (score >= pct && pct <= 15000)
+			{
+				timp += 0.1;
+				pct += 1000;
+			}
+
+			glutPostRedisplay();
 		}
-		i = i - 12 * timp;
-
-		loc_vert -= 6*timp;
-
-		if (loc_vert < -350)
-		{
-			score += 100;
-			height = vector[rand() % 3];
-			cout << "Score:  " << score << endl;
-			loc_vert = 700;
-		}
-
-		if (score >= pct && pct <= 15000)
-		{
-			timp += 0.1;
-			pct += 1000;
-		}
-
-		glutPostRedisplay();
 	}
 	else {
 		ok = 0;
 	}
 }
+void renderPauseMenu() {
+	glPushMatrix();
+	glLoadIdentity();
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRasterPos2f(270.0f, 200.0f);
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned const char*)"Paused game");
+	glRasterPos2f(240.0f, 170.0f);
+	glutBitmapString(GLUT_BITMAP_HELVETICA_18, (unsigned const char*)"Press 'Right' to Resume");
+	glPopMatrix();
+}
 
+void timer(int value) {
+	isYellow1 = false;
+	isYellow2 = false;
+
+	glutPostRedisplay();
+	glutTimerFunc(500, timer, 0); // call this function again after 1000 milliseconds
+}
 
 void drawScene(void)
 {
+
+
 	glClear(GL_COLOR_BUFFER_BIT);
 
 
@@ -164,7 +199,7 @@ void drawScene(void)
 	glVertex2i(-100, 460);// Stanga sus
 	glEnd();
 
-	
+
 
 	RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
 
@@ -267,6 +302,13 @@ void drawScene(void)
 		rdj = -8;
 		rds = 8;
 	}
+	if (paused == 1) {
+		timp = 0;
+
+		renderPauseMenu();
+
+
+	}
 	if (ok == 0 && ok2 == 0)
 	{
 		std::wstring soundPath = directory + L"\\gameover.wav";
@@ -277,7 +319,7 @@ void drawScene(void)
 	glPopMatrix();
 	glPopMatrix();
 	if (ok == 0) {
-		
+
 		RenderString(250.0f, 200.0f, GLUT_BITMAP_8_BY_13, (const unsigned char*)"GAME OVER, AI FOST PRINS!!");
 	}
 
@@ -289,12 +331,12 @@ void drawScene(void)
 		contor = 0;
 
 	}
-	
+
 
 	//MASINA DE POLITIE
 	//desenam a doua masina (adversara)
 	glPushMatrix();
-	glTranslated(loc_vert, height-48, 0.0);
+	glTranslated(loc_vert, height - 48, 0.0);
 
 	//glColor3f(0.471, 0.667, 0.949);
 
@@ -382,7 +424,7 @@ void reshape(int w, int h)
 
 void miscasus(void)
 {
-	if (ok != 0)
+	if (ok != 0 && pauza)
 	{
 		if (j < 320)
 		{
@@ -396,7 +438,7 @@ void miscasus(void)
 
 void miscajos(void)
 {
-	if (ok != 0)
+	if (ok != 0 && pauza)
 	{
 		if (j > 0)
 		{
@@ -413,7 +455,6 @@ void miscajos(void)
 void keyboard(int key, int x, int y)
 {
 
-
 	switch (key) {
 	case GLUT_KEY_UP:
 		isYellow2 = true;
@@ -426,40 +467,42 @@ void keyboard(int key, int x, int y)
 		miscajos();
 		break;
 		// other cases
+	case GLUT_KEY_LEFT:
+		paused = 1;
+		pauza = 0;
+		break;
+	case GLUT_KEY_RIGHT:
+		paused = 0;
+		pauza = 1;
+		timp = 0.15;
+		break;
 	}
-
 }
 
-void timer(int value) {
-	isYellow1 = false;
-	isYellow2 = false;
 
-	glutPostRedisplay();
-	glutTimerFunc(1000, timer, 0); // call this function again after 1000 milliseconds
-}
 
 
 int main(int argc, char** argv)
 {
-	
-		wchar_t path[MAX_PATH];
-		GetModuleFileNameW(NULL, path, MAX_PATH);
-		directory = std::wstring(path);
-		directory = directory.substr(0, directory.find_last_of(L"\\/"));
-		std::wstring soundPath = directory + L"\\muzica.wav";
-		std::wcout << L"Project directory: " << soundPath << std::endl;
-		if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
-			cout << "Muzica fundal";
-		glutInit(&argc, argv);
-		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-		glutInitWindowSize(800, 600);
-		glutInitWindowPosition(100, 100);
-		glutCreateWindow("Depaseste masinile - mini game");
-		init();
-		glutDisplayFunc(drawScene);
-		glutReshapeFunc(reshape);
-		glutSpecialFunc(keyboard);
-		glutTimerFunc(1000, timer, 0);
-		glutMainLoop();
-	
+
+	wchar_t path[MAX_PATH];
+	GetModuleFileNameW(NULL, path, MAX_PATH);
+	directory = std::wstring(path);
+	directory = directory.substr(0, directory.find_last_of(L"\\/"));
+	std::wstring soundPath = directory + L"\\muzica.wav";
+	std::wcout << L"Project directory: " << soundPath << std::endl;
+	if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
+		cout << "Muzica fundal";
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(800, 600);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("Depaseste masinile - mini game");
+	init();
+	glutDisplayFunc(drawScene);
+	glutReshapeFunc(reshape);
+	glutSpecialFunc(keyboard);
+	glutTimerFunc(1000, timer, 0);
+	glutMainLoop();
+
 }
