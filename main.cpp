@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <windows.h>
 #include <GL/glut.h>
 #include <GL/freeglut.h>
@@ -43,6 +43,7 @@ bool gameStarted = false;
 int pauza = 1;
 int menu_id;
 int start = 0;
+int control = 0;
 
 const int font1 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
 const int font2 = (int)GLUT_BITMAP_HELVETICA_18;
@@ -72,93 +73,23 @@ void init(void)
 }
 
 void firstDesign() {
-	
-	//Road Backgound
-	glColor3f(0.000, 0.392, 0.000);
-	glBegin(GL_POLYGON);
-	glVertex2f(0, 55);
-	glVertex2f(100, 55);
-	glColor3f(0.604, 0.804, 0.196);
-	glVertex2f(100, 50 - 50);
-	glVertex2f(0, 50 - 50);
-	glEnd();
-	//Road Design In Front Page
-	glColor3f(00, 0, 0);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(32 - 2 + 21, 55);
-	glVertex2f(32 + 58, 50 - 50);
-	glVertex2f(32 - 22, 50 - 50);
-	glEnd();
-	//Road Midle
-	glColor3f(1, 1, 1);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(32 - 2 + 21, 55);
-	glVertex2f(50 + 2, 50 - 50);
-	glVertex2f(50 - 2, 50 - 50);
-	glEnd();
-	//Road Sky
-	glColor3f(0.000, 0.749, 1.000);
-	glBegin(GL_POLYGON);
-	glVertex2f(100, 100);
-	glVertex2f(0, 100);
-	glColor3f(0.686, 0.933, 0.933);
-	glVertex2f(0, 55);
-	glVertex2f(100, 55);
-	glEnd();
-	//Hill 1
-	glColor3f(0.235, 0.702, 0.443);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(20, 55 + 10);
-	glVertex2f(20 + 7, 55);
-	glVertex2f(0, 55);
-	glEnd();
-	//Hill 2
-	glColor3f(0.000, 0.502, 0.000);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(20 + 15, 55 + 12);
-	glVertex2f(20 + 20 + 10, 55);
-	glVertex2f(0 + 10, 55);
-	glEnd();
-	//Hill 4
-	glColor3f(0.235, 0.702, 0.443);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(87, 55 + 10);
-	glVertex2f(100, 55);
-	glVertex2f(60, 55);
-	glEnd();
-	//Hill 3
-	glColor3f(0.000, 0.502, 0.000);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(70, 70);
-	glVertex2f(90, 55);
-	glVertex2f(50, 55);
-	glEnd();
-	//Tree Left
-		//Bottom
-	glColor3f(0.871, 0.722, 0.529);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(11, 55);
-	glVertex2f(12, 55 - 10);
-	glVertex2f(10, 55 - 10);
-	glEnd();
-	//Up
-	glColor3f(0.133, 0.545, 0.133);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(11, 55 + 3);
-	glVertex2f(12 + 3, 55 - 3);
-	glVertex2f(10 - 3, 55 - 3);
-	glEnd();
-	drawTree(5, -15);
-	drawTree(9, 5);
-	drawTree(85, 9);
-	drawTree(75, -5);
-	
+	glColor3f(0.55, 0.788, 0.451);
 
-	
-	
-	//Text Information in Frist Page
-	
-	
+	// Iarba de jos
+	glBegin(GL_POLYGON);
+	glVertex2i(-100, -140);// Stanga jos
+	glVertex2i(700, -140); // Dreapta jos
+	glVertex2i(700, -80);  // Dreapta sus
+	glVertex2i(-100, -80); // Stanga sus
+	glEnd();
+
+	// Iarba de sus
+	glBegin(GL_POLYGON);
+	glVertex2i(-100, 400);// Stanga jos
+	glVertex2i(700, 400); // Dreapta jos
+	glVertex2i(700, 460); // Dreapta sus
+	glVertex2i(-100, 460);// Stanga sus
+	glEnd();
 }
 
 void miscareGirofar(void) {
@@ -256,9 +187,9 @@ void renderPauseMenu() {
 	glPushMatrix();
 	glLoadIdentity();
 	glColor3f(1.0f, 1.0f, 1.0f);
-	glRasterPos2f(270.0f, 200.0f);
+	glRasterPos2f(240.0f, 200.0f);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned const char*)"Paused game");
-	glRasterPos2f(240.0f, 170.0f);
+	glRasterPos2f(210.0f, 170.0f);
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, (unsigned const char*)"Press 'Right' to Resume");
 	glPopMatrix();
 }
@@ -271,12 +202,51 @@ void timer(int value) {
 	glutTimerFunc(500, timer, 0); // call this function again after 1000 milliseconds
 }
 
-void drawScene(void)
-{
+void mouse(int button, int state, int x, int y) {
+	if (start == 0)
+	{
+		//Controls
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x >= 450 && x <= 550 && y >= 300 && y <= 330) {
+			if (control == 0)
+			{
+				control = 1;
+			}
+			else
+			{
+				control = 0;
+			}
+		}
+		//Start
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x >= 250 && x <= 350 && y >= 300 && y <= 330) {
+			start = 1;
+		}
+	}
+	RenderString(177.0f, 140.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Start");
 	
-	glClear(GL_COLOR_BUFFER_BIT);
+}
 
+void ControlMenu()
+{
+	glColor3f(0.7, 0.7, 0.7);
+	glEnable(GL_LINE_STIPPLE);
+	glLineStipple(1, 0x00FF);
+	glBegin(GL_POLYGON);
+	glVertex2i(500, -100);
+	glVertex2i(100, -100);
+	glVertex2i(100, 90);
+	glVertex2i(500, 90);
+	glEnd();
+	glDisable(GL_LINE_STIPPLE);
+	RenderString(120.0f, -85.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Click dreapta - alege melodiia");
+	RenderString(120.0f, -55.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"F3 - Start/Stop");
+	RenderString(120.0f, -15.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata sus - Schimba banda in sus");
+	RenderString(120.0f, 5.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata jos - Schimba banda in sus");
+	RenderString(120.0f, 35.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata dreapta - Reia");
+	RenderString(120.0f, 65.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata stanga - Pauza");
+}
 
+void StartMenu(void)
+{
 	glColor3f(0.55, 0.788, 0.451);
 
 	// Iarba de jos
@@ -298,7 +268,49 @@ void drawScene(void)
 
 
 	RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
+	
 
+	glTranslated(i, 0.0, 0.0);
+	glColor3f(0.7, 0.7, 0.7);
+	glEnable(GL_LINE_STIPPLE);
+	glLineStipple(1, 0x00FF);
+	glBegin(GL_POLYGON);
+	glVertex2i(500, 100);
+	glVertex2i(100, 100);
+	glVertex2i(100, 200);
+	glVertex2i(500, 200);
+	
+	glEnd();
+	glDisable(GL_LINE_STIPPLE);
+
+	glTranslated(i, 0.0, 0.0);
+	glColor3f(0.7, 0.7, 1);
+	glEnable(GL_LINE_STIPPLE);
+	glLineStipple(1, 0x00FF);
+	glBegin(GL_POLYGON);
+	glVertex2i(250, 130);
+	glVertex2i(150, 130);
+	glVertex2i(150, 170);
+	glVertex2i(250, 170);
+	glEnd();
+	glDisable(GL_LINE_STIPPLE);
+
+	
+	glColor3f(0.7, 0.7, 1);
+	glEnable(GL_LINE_STIPPLE);
+	glLineStipple(1, 0x00FF);
+	glBegin(GL_POLYGON);
+	glVertex2i(470, 130);
+	glVertex2i(350, 130);
+	glVertex2i(350, 170);
+	glVertex2i(470, 170);
+	glEnd();
+	glDisable(GL_LINE_STIPPLE);
+
+	RenderString(177.0f, 140.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Start");
+	RenderString(375.0f, 140.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Control");
+
+	
 
 
 	// Delimitare sosea
@@ -317,15 +329,23 @@ void drawScene(void)
 	glVertex2i(1500, 400);
 	glEnd();
 
+   
+
 	glPushMatrix();
+	for (int i = 0; i <= 20; i++)
+	{
+		drawTree(-40 + 120*i, -120);
+	}
+
+	//control
+
+	if (control == 1)
+	{
+		ControlMenu();
+	}
+
 
 	// Liniile intrerupte
-
-	//Dresenam Obiecte
-	drawTree(PozitieCopac, -130);
-	drawBush(PozitieBoschet, -120);
-	drawHouse(PozitieCasa, -130);
-	drawRock(PozitieRock, -130);
 
 	glTranslated(i, 0.0, 0.0);
 	glColor3f(1, 1, 1);
@@ -349,163 +369,254 @@ void drawScene(void)
 	glPopMatrix();
 	glPushMatrix();
 	//Afisare scor
-	string scoreText = "Score: " + to_string(score); // convert the score to a string
-	const unsigned char* scoreStr = reinterpret_cast<const unsigned char*>(scoreText.c_str()); // convert the string to a char array
-	RenderString(580.0f, 425.0f, GLUT_BITMAP_HELVETICA_18, scoreStr); // display the score
-
-
-	//desenam masina
-	glPushMatrix();
-	glTranslated(0.0, j, 0.0);
-
-	//masina lu' Hotzu
-	glColor3f(0.996, 0.365, 0.149);
-	glRecti(-45, -25, -20, 25);
-	glColor3f(0, 0, 0);
-	glRecti(-20, -25, 45, 25);
-	glColor3f(0.996, 0.365, 0.149);
-	glRecti(45, -25, 70, 25);
-	//faruri
-	glColor3f(0.8, 0.5, 0);
-	glRecti(70, -25, 80, -10);
-	glColor3f(0.8, 0.5, 0);
-	glRecti(70, 10, 80, 25);
-	//stopuri
-	glColor3f(1, 0, 0);
-	glRecti(-55, -25, -45, -10);
-	glColor3f(1, 0, 0);
-	glRecti(-55, 10, -45, 25);
-
-	if (isYellow1) {
-		glColor3f(1.0, 1.0, 0.0); // yellow color
-	}
-	else {
-		glColor3f(0.8, 0.5, 0.0); // original color
-	}
-	glRecti(70, -25, 80, -10);
-	if (isYellow2) {
-		glColor3f(1.0, 1.0, 0.0); // yellow color
-	}
-	else {
-		glColor3f(0.8, 0.5, 0.0); // original color
-	}
-	glRecti(70, 10, 80, 25);
-
-	if (ok == 0)
-	{
-		rsj = 8;
-		rss = -8;
-		rdj = -8;
-		rds = 8;
-	}
-	if (paused == 1) {
-		timp = 0;
-
-		renderPauseMenu();
-
-
-	}
-	if (ok == 0 && ok2 == 0)
-	{
-		std::wstring soundPath = directory + L"\\gameover.wav";
-		if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
-			cout << "Muzica Joc Terminat!";
-		ok2 = 1;
-	}
+	//string scoreText = "Score: " + to_string(score); // convert the score to a string
+	//const unsigned char* scoreStr = reinterpret_cast<const unsigned char*>(scoreText.c_str()); // convert the string to a char array
+	//RenderString(580.0f, 425.0f, GLUT_BITMAP_HELVETICA_18, scoreStr); // display the score
 	glPopMatrix();
-	glPopMatrix();
-	if (ok == 0) {
-
-		RenderString(250.0f, 200.0f, GLUT_BITMAP_8_BY_13, (const unsigned char*)"GAME OVER, AI FOST PRINS!!");
-	}
-
-	if (contor == 1 && (j != 160 && j != 320))
-		j = j + 1;
-	else if (contor == -1 && (j != 160 && j != 0))
-		j = j - 1;
-	else {
-		contor = 0;
-
-	}
-
-
-	//MASINA DE POLITIE
-	//desenam a doua masina (adversara)
-	glPushMatrix();
-	glTranslated(loc_vert, height - 48, 0.0);
-
-	//glColor3f(0.471, 0.667, 0.949);
-
-	//glRecti(-45, -15, 45, 15);
-	//SASIU
-	glRotated(90, 0, 0, 1);
-	glColor3f(0, 0, 0);
-	glRectf(20, -180, 80, -155);
-	glColor3f(1, 1, 1);
-	glRectf(20, -155, 80, -115);
-	glColor3f(0, 0, 0);
-	glRectf(20, -115, 80, -90);
-
-	//STOPURI
-	glColor3f(1, 0, 0);
-	glRectf(25, -185, 35, -180);
-	glColor3f(1, 0, 0);
-	glRectf(65, -185, 75, -180);
-
-	//FARURI
-	glColor3f(0.8, 0.5, 0);
-	glRectf(25, -90, 35, -85);
-	glColor3f(0.8, 0.5, 0);
-	glRectf(65, -90, 75, -85);
-
-
-	glColor3f(1, 1, 0);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(30, -85);
-	glVertex2f(0, 0);
-	glVertex2f(60, 0);
-
-	glVertex2f(40, 0);
-	glVertex2f(100, 0);
-	glVertex2f(70, -85);
-
-	glEnd();
-
-	// GIROFAR
-
-
-	glTranslated(50, -135, 0);
-	glRotated(z, 0, 0, 1);
-	glTranslated(-50, 135, 0);
-
-	//girofar
-	glColor4f(1, 0, 0, 0.5);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(10, -115);
-	glVertex2f(50, -135);
-	glVertex2f(10, -155);
-	glEnd();
-
-
-	glColor4f(0, 0, 1, 0.5);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(50, -135);
-	glVertex2f(90, -115);
-	glVertex2f(90, -155);
-	glEnd();
-
-	glPopMatrix();
-	glPopMatrix();
-	// incrementare pentru girofar si alte translatii
-	glutIdleFunc(miscareGirofar);
-
-
-	glPopMatrix();
-
-	startgame();
 	glutPostRedisplay();
 	glutSwapBuffers();
 	glFlush();
+
+}
+
+void drawScene(void)
+{
+	if (start == 1)
+	{
+		glColor3f(0.55, 0.788, 0.451);
+
+		// Iarba de jos
+		glBegin(GL_POLYGON);
+		glVertex2i(-100, -140);// Stanga jos
+		glVertex2i(700, -140); // Dreapta jos
+		glVertex2i(700, -80);  // Dreapta sus
+		glVertex2i(-100, -80); // Stanga sus
+		glEnd();
+
+		// Iarba de sus
+		glBegin(GL_POLYGON);
+		glVertex2i(-100, 400);// Stanga jos
+		glVertex2i(700, 400); // Dreapta jos
+		glVertex2i(700, 460); // Dreapta sus
+		glVertex2i(-100, 460);// Stanga sus
+		glEnd();
+
+
+
+		RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
+
+
+
+		// Delimitare sosea
+		glLineWidth(3);
+		glColor3f(1, 1, 1);
+
+		// Delimitam soseaua de iarba partea de jos
+		glBegin(GL_LINES);
+		glVertex2i(-100, -80);
+		glVertex2i(1500, -80);
+		glEnd();
+
+		// Delimitam soseaua de iarba partea de sus
+		glBegin(GL_LINES);
+		glVertex2i(-100, 400);
+		glVertex2i(1500, 400);
+		glEnd();
+
+		glPushMatrix();
+
+		// Liniile intrerupte
+
+		//Dresenam Obiecte
+		drawTree(PozitieCopac, -130);
+		drawBush(PozitieBoschet, -120);
+		drawHouse(PozitieCasa, -130);
+		drawRock(PozitieRock, -130);
+
+		glTranslated(i, 0.0, 0.0);
+		glColor3f(1, 1, 1);
+		glEnable(GL_LINE_STIPPLE);
+		glLineStipple(1, 0x00FF);
+		glBegin(GL_LINES);
+		glVertex2i(-100, 80);
+		glVertex2i(1500, 80);
+		glEnd();
+		glDisable(GL_LINE_STIPPLE);
+
+		glColor3f(1, 1, 1);
+		glEnable(GL_LINE_STIPPLE);
+		glLineStipple(1, 0x00FF);
+		glBegin(GL_LINES);
+		glTranslated(i, 0.0, 0.0);
+		glVertex2i(-100, 240);
+		glVertex2i(1500, 240);
+		glEnd();
+		glDisable(GL_LINE_STIPPLE);
+		glPopMatrix();
+		glPushMatrix();
+		//Afisare scor
+		string scoreText = "Score: " + to_string(score); // convert the score to a string
+		const unsigned char* scoreStr = reinterpret_cast<const unsigned char*>(scoreText.c_str()); // convert the string to a char array
+		RenderString(580.0f, 425.0f, GLUT_BITMAP_HELVETICA_18, scoreStr); // display the score
+
+
+		//desenam masina
+		glPushMatrix();
+		glTranslated(0.0, j, 0.0);
+
+		//masina lu' Hotzu
+		glColor3f(0.996, 0.365, 0.149);
+		glRecti(-45, -25, -20, 25);
+		glColor3f(0, 0, 0);
+		glRecti(-20, -25, 45, 25);
+		glColor3f(0.996, 0.365, 0.149);
+		glRecti(45, -25, 70, 25);
+		//faruri
+		glColor3f(0.8, 0.5, 0);
+		glRecti(70, -25, 80, -10);
+		glColor3f(0.8, 0.5, 0);
+		glRecti(70, 10, 80, 25);
+		//stopuri
+		glColor3f(1, 0, 0);
+		glRecti(-55, -25, -45, -10);
+		glColor3f(1, 0, 0);
+		glRecti(-55, 10, -45, 25);
+
+		if (isYellow1) {
+			glColor3f(1.0, 1.0, 0.0); // yellow color
+		}
+		else {
+			glColor3f(0.8, 0.5, 0.0); // original color
+		}
+		glRecti(70, -25, 80, -10);
+		if (isYellow2) {
+			glColor3f(1.0, 1.0, 0.0); // yellow color
+		}
+		else {
+			glColor3f(0.8, 0.5, 0.0); // original color
+		}
+		glRecti(70, 10, 80, 25);
+
+		if (ok == 0)
+		{
+			rsj = 8;
+			rss = -8;
+			rdj = -8;
+			rds = 8;
+		}
+		if (paused == 1) {
+			timp = 0;
+
+			renderPauseMenu();
+		}
+
+		if (control == 1)
+		{
+			ControlMenu();
+		}
+
+		if (ok == 0 && ok2 == 0)
+		{
+			std::wstring soundPath = directory + L"\\gameover.wav";
+			if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
+				cout << "Muzica Joc Terminat!";
+			ok2 = 1;
+		}
+		glPopMatrix();
+		glPopMatrix();
+		if (ok == 0) {
+
+			RenderString(250.0f, 200.0f, GLUT_BITMAP_8_BY_13, (const unsigned char*)"GAME OVER, AI FOST PRINS!!");
+		}
+
+		if (contor == 1 && (j != 160 && j != 320))
+			j = j + 1;
+		else if (contor == -1 && (j != 160 && j != 0))
+			j = j - 1;
+		else {
+			contor = 0;
+
+		}
+
+
+		//MASINA DE POLITIE
+		//desenam a doua masina (adversara)
+		glPushMatrix();
+		glTranslated(loc_vert, height - 48, 0.0);
+
+		//glColor3f(0.471, 0.667, 0.949);
+
+		//glRecti(-45, -15, 45, 15);
+		//SASIU
+		glRotated(90, 0, 0, 1);
+		glColor3f(0, 0, 0);
+		glRectf(20, -180, 80, -155);
+		glColor3f(1, 1, 1);
+		glRectf(20, -155, 80, -115);
+		glColor3f(0, 0, 0);
+		glRectf(20, -115, 80, -90);
+
+		//STOPURI
+		glColor3f(1, 0, 0);
+		glRectf(25, -185, 35, -180);
+		glColor3f(1, 0, 0);
+		glRectf(65, -185, 75, -180);
+
+		//FARURI
+		glColor3f(0.8, 0.5, 0);
+		glRectf(25, -90, 35, -85);
+		glColor3f(0.8, 0.5, 0);
+		glRectf(65, -90, 75, -85);
+
+
+		glColor3f(1, 1, 0);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(30, -85);
+		glVertex2f(0, 0);
+		glVertex2f(60, 0);
+
+		glVertex2f(40, 0);
+		glVertex2f(100, 0);
+		glVertex2f(70, -85);
+
+		glEnd();
+
+		// GIROFAR
+
+
+		glTranslated(50, -135, 0);
+		glRotated(z*20, 0, 0, 1);
+		glTranslated(-50, 135, 0);
+
+		//girofar
+		glColor4f(1, 0, 0, 0.5);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(10, -115);
+		glVertex2f(50, -135);
+		glVertex2f(10, -155);
+		glEnd();
+
+
+		glColor4f(0, 0, 1, 0.5);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(50, -135);
+		glVertex2f(90, -115);
+		glVertex2f(90, -155);
+		glEnd();
+
+		glPopMatrix();
+		glPopMatrix();
+		// incrementare pentru girofar si alte translatii
+		glutIdleFunc(miscareGirofar);
+
+
+		glPopMatrix();
+
+		startgame();
+		glutPostRedisplay();
+		glutSwapBuffers();
+		glFlush();
+	}
 }
 
 void reshape(int w, int h)
@@ -548,22 +659,17 @@ void miscajos(void)
 	}
 }
 void display() {
-	glClear(GL_COLOR_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	if (start == 1) {
-		// glClearColor(0.627, 0.322, 0.176,1);
-
-		//glClearColor(0.5, 0.5, 0.5, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
 		drawScene();
 	}
 	if(start == 0) {
-		firstDesign();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		StartMenu();
 		
-		glClearColor(0.5, 0.5, 0.5, 0.0);
 	}
-	//glFlush();
-	glutSwapBuffers();
+	//glutSwapBuffers();
 }
 void menu(int choice) {
 	wchar_t path[MAX_PATH];
@@ -624,10 +730,21 @@ void keyboard(int key, int x, int y)
 		timp = 0.15;
 		break;
 	case GLUT_KEY_F3:
-		if (start == 0) {
-			start = 1;
+		if (pauza == 0) {
+			pauza = 1;
+			paused = 0;
+			timp = 0.15;
+			control = 0;
+			
 		}
-		
+		else
+		{
+			pauza = 0;
+			paused = 1;
+			control = 1;
+
+		}
+		break;
 	}
 }
 
@@ -650,6 +767,7 @@ int main(int argc, char** argv)
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Depaseste masinile - mini game");
+	glutMouseFunc(mouse);
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
