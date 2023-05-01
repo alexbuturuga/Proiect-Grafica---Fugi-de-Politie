@@ -41,6 +41,7 @@ double rsj, rdj, rss, rds = 0;
 double paused = 0;
 bool gameStarted = false;
 int pauza = 1;
+int menu_id;
 
 
 
@@ -452,6 +453,40 @@ void miscajos(void)
 	}
 }
 
+void menu(int choice) {
+	wchar_t path[MAX_PATH];
+	GetModuleFileNameW(NULL, path, MAX_PATH);
+	directory = std::wstring(path);
+	directory = directory.substr(0, directory.find_last_of(L"\\/"));
+	std::wstring soundPath;
+	soundPath = directory + L"\\muzica.wav";
+	std::wcout << L"Project directory: " << soundPath << std::endl;
+	switch (choice) {
+	case 1:
+		//Melodie 1
+		soundPath = directory + L"\\muzica.wav";
+		break;
+	case 2:
+		soundPath = directory + L"\\muzica2.wav";
+		break;
+	case 3:
+		soundPath = directory + L"\\muzica3.wav";
+		break;
+	}
+
+	if (PlaySound(soundPath.c_str(), NULL, SND_ASYNC))
+		cout << "Muzica 1";
+	glutPostRedisplay();
+}
+
+void createMenu() {
+	menu_id = glutCreateMenu(menu);
+	glutAddMenuEntry("Beat it", 1);
+	glutAddMenuEntry("Bad", 2);
+	glutAddMenuEntry("Billie Jean", 3);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
 void keyboard(int key, int x, int y)
 {
 
@@ -503,6 +538,7 @@ int main(int argc, char** argv)
 	glutReshapeFunc(reshape);
 	glutSpecialFunc(keyboard);
 	glutTimerFunc(1000, timer, 0);
+	createMenu();
 	glutMainLoop();
 
 }
