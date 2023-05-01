@@ -42,9 +42,11 @@ double paused = 0;
 bool gameStarted = false;
 int pauza = 1;
 int menu_id;
+int start = 0;
 
-
-
+const int font1 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
+const int font2 = (int)GLUT_BITMAP_HELVETICA_18;
+const int font3 = (int)GLUT_BITMAP_8_BY_13;
 
 
 void RenderString(float x, float y, void* font, const unsigned char* string)
@@ -53,7 +55,13 @@ void RenderString(float x, float y, void* font, const unsigned char* string)
 	glRasterPos2f(x, y);
 	glutBitmapString(font, string);
 }
-
+void renderBitmapString(float x, float y, void* font, const char* string) {
+	const char* c;
+	glRasterPos2f(x, y);
+	for (c = string; *c != '\0'; c++) {
+		glutBitmapCharacter(font, *c);
+	}
+}
 void init(void)
 {
 
@@ -63,7 +71,95 @@ void init(void)
 
 }
 
+void firstDesign() {
+	
+	//Road Backgound
+	glColor3f(0.000, 0.392, 0.000);
+	glBegin(GL_POLYGON);
+	glVertex2f(0, 55);
+	glVertex2f(100, 55);
+	glColor3f(0.604, 0.804, 0.196);
+	glVertex2f(100, 50 - 50);
+	glVertex2f(0, 50 - 50);
+	glEnd();
+	//Road Design In Front Page
+	glColor3f(00, 0, 0);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(32 - 2 + 21, 55);
+	glVertex2f(32 + 58, 50 - 50);
+	glVertex2f(32 - 22, 50 - 50);
+	glEnd();
+	//Road Midle
+	glColor3f(1, 1, 1);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(32 - 2 + 21, 55);
+	glVertex2f(50 + 2, 50 - 50);
+	glVertex2f(50 - 2, 50 - 50);
+	glEnd();
+	//Road Sky
+	glColor3f(0.000, 0.749, 1.000);
+	glBegin(GL_POLYGON);
+	glVertex2f(100, 100);
+	glVertex2f(0, 100);
+	glColor3f(0.686, 0.933, 0.933);
+	glVertex2f(0, 55);
+	glVertex2f(100, 55);
+	glEnd();
+	//Hill 1
+	glColor3f(0.235, 0.702, 0.443);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(20, 55 + 10);
+	glVertex2f(20 + 7, 55);
+	glVertex2f(0, 55);
+	glEnd();
+	//Hill 2
+	glColor3f(0.000, 0.502, 0.000);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(20 + 15, 55 + 12);
+	glVertex2f(20 + 20 + 10, 55);
+	glVertex2f(0 + 10, 55);
+	glEnd();
+	//Hill 4
+	glColor3f(0.235, 0.702, 0.443);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(87, 55 + 10);
+	glVertex2f(100, 55);
+	glVertex2f(60, 55);
+	glEnd();
+	//Hill 3
+	glColor3f(0.000, 0.502, 0.000);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(70, 70);
+	glVertex2f(90, 55);
+	glVertex2f(50, 55);
+	glEnd();
+	//Tree Left
+		//Bottom
+	glColor3f(0.871, 0.722, 0.529);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(11, 55);
+	glVertex2f(12, 55 - 10);
+	glVertex2f(10, 55 - 10);
+	glEnd();
+	//Up
+	glColor3f(0.133, 0.545, 0.133);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(11, 55 + 3);
+	glVertex2f(12 + 3, 55 - 3);
+	glVertex2f(10 - 3, 55 - 3);
+	glEnd();
+	drawTree(5, -15);
+	drawTree(9, 5);
+	drawTree(85, 9);
+	drawTree(75, -5);
+	
 
+	
+	
+	//Text Information in Frist Page
+	
+	
+}
 
 void miscareGirofar(void) {
 	// pentru girofar
@@ -89,7 +185,7 @@ void miscareGirofar(void) {
 
 void startgame(void)
 {
-
+	
 	if (height != j || (loc_vert > 90 || loc_vert < -90))
 	{
 		if (pauza == 1)
@@ -177,8 +273,7 @@ void timer(int value) {
 
 void drawScene(void)
 {
-
-
+	
 	glClear(GL_COLOR_BUFFER_BIT);
 
 
@@ -452,7 +547,24 @@ void miscajos(void)
 		glutPostRedisplay();
 	}
 }
+void display() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	if (start == 1) {
+		// glClearColor(0.627, 0.322, 0.176,1);
 
+		//glClearColor(0.5, 0.5, 0.5, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		drawScene();
+	}
+	if(start == 0) {
+		firstDesign();
+		
+		glClearColor(0.5, 0.5, 0.5, 0.0);
+	}
+	//glFlush();
+	glutSwapBuffers();
+}
 void menu(int choice) {
 	wchar_t path[MAX_PATH];
 	GetModuleFileNameW(NULL, path, MAX_PATH);
@@ -511,6 +623,11 @@ void keyboard(int key, int x, int y)
 		pauza = 1;
 		timp = 0.15;
 		break;
+	case GLUT_KEY_F3:
+		if (start == 0) {
+			start = 1;
+		}
+		
 	}
 }
 
@@ -534,7 +651,7 @@ int main(int argc, char** argv)
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Depaseste masinile - mini game");
 	init();
-	glutDisplayFunc(drawScene);
+	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutSpecialFunc(keyboard);
 	glutTimerFunc(1000, timer, 0);
