@@ -12,7 +12,6 @@
 using namespace std;
 
 double xFinal = 20;
-
 std::wstring directory;
 GLdouble left_m = -100.0;
 GLdouble right_m = 700.0;
@@ -30,7 +29,7 @@ bool isYellow1 = false;
 bool isYellow2 = false;
 double contor = 0;
 double loc_vert = 800;
-int vector[3] = { 0, 160, 320 };
+int vector[3] = {0, 160, 320};
 double height = vector[rand() % 3];
 int score = 0;
 double timp = 0.15;
