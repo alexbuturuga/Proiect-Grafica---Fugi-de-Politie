@@ -19,7 +19,10 @@ GLdouble left_m = -100.0;
 GLdouble right_m = 700.0;
 GLdouble bottom_m = -140.0;
 GLdouble top_m = 460.0;
+int exponent = 0;
+int acceleratie = pow(2,exponent);
 double ok = 1;
+int misca = 0;
 double j = 0.0;
 double i = 0.0;
 double z = 0.0;
@@ -27,6 +30,7 @@ double PozitieCopac = 175;
 double PozitieRock = 400;
 double PozitieCasa = 660;
 double PozitieBoschet = 900;
+int PozitieBariera = 800;
 bool isYellow1 = false;
 bool isYellow2 = false;
 double contor = 0;
@@ -44,11 +48,16 @@ int pauza = 1;
 int menu_id;
 int start = 0;
 int control = 0;
+int r = 10;
+
 
 const int font1 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
 const int font2 = (int)GLUT_BITMAP_HELVETICA_18;
 const int font3 = (int)GLUT_BITMAP_8_BY_13;
 
+int randomNumber(int min, int max) {
+	return rand() % (max - min + 1) + min;
+}
 
 void RenderString(float x, float y, void* font, const unsigned char* string)
 {
@@ -117,13 +126,28 @@ void miscareGirofar(void) {
 void startgame(void)
 {
 	
-	if (height != j || (loc_vert > 90 || loc_vert < -90))
+	if ((height != j || (loc_vert > 10 || loc_vert < -100)) && (ok == 1))
 	{
+		
+		if (160 * r == j && !(loc_vert > 40 || loc_vert < -40))
+		{
+			ok = 0;
+			pauza = 0;
+		}
+
 		if (pauza == 1)
 		{
+			if (PozitieBariera > -200)
+			{
+				PozitieBariera = PozitieBariera - 1 * acceleratie;
+			}
+			else
+			{
+				PozitieBariera= 800;
+			}
 			if (PozitieCopac > -200)
 			{
-				PozitieCopac--;
+				PozitieCopac = PozitieCopac - 1 * acceleratie;
 			}
 			else
 			{
@@ -131,7 +155,7 @@ void startgame(void)
 			}
 			if (PozitieCasa > -200)
 			{
-				PozitieCasa--;
+				PozitieCasa = PozitieCasa - 1 * acceleratie;
 			}
 			else
 			{
@@ -139,7 +163,7 @@ void startgame(void)
 			}
 			if (PozitieBoschet > -200)
 			{
-				PozitieBoschet--;
+				PozitieBoschet = PozitieBoschet - 1 * acceleratie;
 			}
 			else
 			{
@@ -147,7 +171,7 @@ void startgame(void)
 			}
 			if (PozitieRock > -200)
 			{
-				PozitieRock--;
+				PozitieRock = PozitieRock - 1 * acceleratie;
 			}
 			else
 			{
@@ -158,9 +182,9 @@ void startgame(void)
 			{
 				i = 0;
 			}
-			i = i - 12 * timp;
+			i = i - 12 * timp + 1;
 
-			loc_vert -= 6 * timp;
+			loc_vert -= 6 * timp + 1 * acceleratie;
 
 			if (loc_vert < -350)
 			{
@@ -181,6 +205,7 @@ void startgame(void)
 	}
 	else {
 		ok = 0;
+		pauza = 0;
 	}
 }
 void renderPauseMenu() {
@@ -231,6 +256,22 @@ void ControlMenu()
 	glEnable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0x00FF);
 	glBegin(GL_POLYGON);
+	glVertex2i(500, 250);
+	glVertex2i(100, 250);
+	glVertex2i(100, 410);
+	glVertex2i(500, 410);
+	glEnd();
+	glDisable(GL_LINE_STIPPLE);
+	RenderString(240.0f, 380.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Instructiuni :");
+	RenderString(110.0f, 350.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Trebuie sa fii in totalitate pe alta");
+	RenderString(110.0f, 320.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Banda pentru a nu fi prins de politie.");
+	RenderString(110.0f, 290.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"De la 1000 de puncte apar obstacole.");
+
+
+	glColor3f(0.7, 0.7, 0.7);
+	glEnable(GL_LINE_STIPPLE);
+	glLineStipple(1, 0x00FF);
+	glBegin(GL_POLYGON);
 	glVertex2i(500, -100);
 	glVertex2i(100, -100);
 	glVertex2i(100, 90);
@@ -239,10 +280,10 @@ void ControlMenu()
 	glDisable(GL_LINE_STIPPLE);
 	RenderString(120.0f, -85.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Click dreapta - alege melodiia");
 	RenderString(120.0f, -55.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"F3 - Start/Stop");
-	RenderString(120.0f, -15.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata sus - Schimba banda in sus");
+	RenderString(120.0f, -25.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata sus - Schimba banda in sus");
 	RenderString(120.0f, 5.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata jos - Schimba banda in sus");
-	RenderString(120.0f, 35.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata dreapta - Reia");
-	RenderString(120.0f, 65.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata stanga - Pauza");
+	RenderString(120.0f, 35.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata dreapta - Creste acceleratia");
+	RenderString(120.0f, 65.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Sageata stanga - Scade acceleratia");
 }
 
 void StartMenu(void)
@@ -433,13 +474,13 @@ void drawScene(void)
 		drawHouse(PozitieCasa, -130);
 		drawRock(PozitieRock, -130);
 
-		glTranslated(i, 0.0, 0.0);
+		glTranslated(i*acceleratie, 0.0, 0.0);
 		glColor3f(1, 1, 1);
 		glEnable(GL_LINE_STIPPLE);
 		glLineStipple(1, 0x00FF);
 		glBegin(GL_LINES);
 		glVertex2i(-100, 80);
-		glVertex2i(1500, 80);
+		glVertex2i(3500, 80);
 		glEnd();
 		glDisable(GL_LINE_STIPPLE);
 
@@ -447,9 +488,9 @@ void drawScene(void)
 		glEnable(GL_LINE_STIPPLE);
 		glLineStipple(1, 0x00FF);
 		glBegin(GL_LINES);
-		glTranslated(i, 0.0, 0.0);
+		glTranslated(i * acceleratie, 0.0, 0.0);
 		glVertex2i(-100, 240);
-		glVertex2i(1500, 240);
+		glVertex2i(3500, 240);
 		glEnd();
 		glDisable(GL_LINE_STIPPLE);
 		glPopMatrix();
@@ -462,6 +503,7 @@ void drawScene(void)
 
 		//desenam masina
 		glPushMatrix();
+
 		glTranslated(0.0, j, 0.0);
 
 		//masina lu' Hotzu
@@ -512,6 +554,8 @@ void drawScene(void)
 
 		if (control == 1)
 		{
+			glPopMatrix();
+			glPushMatrix();
 			ControlMenu();
 		}
 
@@ -530,14 +574,37 @@ void drawScene(void)
 		}
 
 		if (contor == 1 && (j != 160 && j != 320))
-			j = j + 1;
-		else if (contor == -1 && (j != 160 && j != 0))
-			j = j - 1;
-		else {
-			contor = 0;
-
+		{
+			j = j + 2 * pauza;
 		}
 
+		else if (contor == -1 && (j != 160 && j != 0))
+		{
+			j = j - 2 * pauza;
+		}
+		else {
+			contor = 0;
+			misca = 0;
+		}
+		//Girofar
+		
+		
+		if (score >= 1000)
+		{
+			if (r == 10)
+			{
+				r = 1;
+				PozitieBariera = 800;
+			}
+				
+			//glTranslated(loc_vert, height - 48, 0.0);
+			if(PozitieBariera == -199)
+				r = randomNumber(0, 2);
+
+			drawBarrier(PozitieBariera, r*150-40);
+		}
+		
+		
 
 		//MASINA DE POLITIE
 		//desenam a doua masina (adversara)
@@ -619,6 +686,8 @@ void drawScene(void)
 	}
 }
 
+
+
 void reshape(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
@@ -633,11 +702,14 @@ void miscasus(void)
 {
 	if (ok != 0 && pauza)
 	{
+		
 		if (j < 320)
 		{
 			contor = 1;
-			j += 1;
+			j += 2;
+			misca = 1;
 		}
+		
 
 		glutPostRedisplay();
 	}
@@ -650,9 +722,8 @@ void miscajos(void)
 		if (j > 0)
 		{
 			contor = -1;
-			j -= 1;
-
-
+			j -= 2;
+			misca = -1;
 		}
 
 		glutPostRedisplay();
@@ -721,13 +792,12 @@ void keyboard(int key, int x, int y)
 		break;
 		// other cases
 	case GLUT_KEY_LEFT:
-		paused = 1;
-		pauza = 0;
+		if (acceleratie >= 1)
+		acceleratie--;
 		break;
 	case GLUT_KEY_RIGHT:
-		paused = 0;
-		pauza = 1;
-		timp = 0.15;
+		if(acceleratie <= 4)
+		acceleratie++;
 		break;
 	case GLUT_KEY_F3:
 		if (pauza == 0) {
