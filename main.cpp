@@ -65,13 +65,7 @@ void RenderString(float x, float y, void* font, const unsigned char* string)
 	glRasterPos2f(x, y);
 	glutBitmapString(font, string);
 }
-void renderBitmapString(float x, float y, void* font, const char* string) {
-	const char* c;
-	glRasterPos2f(x, y);
-	for (c = string; *c != '\0'; c++) {
-		glutBitmapCharacter(font, *c);
-	}
-}
+
 void init(void)
 {
 
@@ -129,7 +123,7 @@ void startgame(void)
 	if ((height != j || (loc_vert > 10 || loc_vert < -100)) && (ok == 1))
 	{
 		
-		if (160 * r == j && !(loc_vert > 40 || loc_vert < -40))
+		if (160 * r == j && !(PozitieBariera > 60 || PozitieBariera < 15))
 		{
 			ok = 0;
 			pauza = 0;
@@ -310,6 +304,7 @@ void StartMenu(void)
 
 	RenderString(160.0f, 425.0f, GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)"Nu lasa politia sa te prinda!");
 	
+	//Chenar meniu
 
 	glTranslated(i, 0.0, 0.0);
 	glColor3f(0.7, 0.7, 0.7);
@@ -320,9 +315,10 @@ void StartMenu(void)
 	glVertex2i(100, 100);
 	glVertex2i(100, 200);
 	glVertex2i(500, 200);
-	
 	glEnd();
 	glDisable(GL_LINE_STIPPLE);
+
+	//Butoane
 
 	glTranslated(i, 0.0, 0.0);
 	glColor3f(0.7, 0.7, 1);
@@ -370,9 +366,8 @@ void StartMenu(void)
 	glVertex2i(1500, 400);
 	glEnd();
 
-   
 
-	glPushMatrix();
+	//Desenam copacii
 	for (int i = 0; i <= 20; i++)
 	{
 		drawTree(-40 + 120*i, -120);
@@ -558,7 +553,7 @@ void drawScene(void)
 			glPushMatrix();
 			ControlMenu();
 		}
-
+		//ok2 verifica daca este pornita muzica de final de joc
 		if (ok == 0 && ok2 == 0)
 		{
 			std::wstring soundPath = directory + L"\\gameover.wav";
@@ -589,7 +584,7 @@ void drawScene(void)
 		//Girofar
 		
 		
-		if (score >= 1000)
+		if (score >= 100)
 		{
 			if (r == 10)
 			{
